@@ -69,9 +69,9 @@ def xox():
     drawns = [[0 for _ in range(3)] for _ in range(3)]
     rects = [[[]for k in range(3)] for _ in range(3)]
     player_select = 0
-    xs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/xox/images/x_image.png").convert()
+    xs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/xox/images/x_image.png").convert()
     x = pygame.transform.scale(xs,[225,225])
-    os = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/xox/images/o_image.png").convert()
+    os = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/xox/images/o_image.png").convert()
     o = pygame.transform.scale(os,[225,225])
 
 

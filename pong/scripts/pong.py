@@ -9,11 +9,11 @@ BALLSIZE = 20
 PLAYERW = 20
 PLAYERH = 60
 
-halfsideimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/images/halfside.png")
+halfsideimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/images/halfside.png")
 halfsidimg = pygame.transform.scale(halfsideimgs,(halfsideimgs.get_width(),HEIGHT))
-ballimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/images/ball.png")
+ballimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/images/ball.png")
 ballimg = pygame.transform.scale(ballimgs,(BALLSIZE,BALLSIZE))
-playerimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/images/player.png")
+playerimgs = pygame.image.load("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/images/player.png")
 playerimg = pygame.transform.scale(playerimgs,(PLAYERW,PLAYERH))
 
 def set_it_right(number,bottom,upper):
@@ -32,7 +32,7 @@ class Player:
         self.direction = 0
     def goal_conceded(self):
         self.goal+=1
-        goal_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/sounds/goal.mp3")
+        goal_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/sounds/goal.mp3")
         goal_sound.play()
     def won(self):
         if self.goal==10:
@@ -93,7 +93,7 @@ def draw_begin(player1:Player,player2:Player,ball:Ball,screen:pygame.Surface):
     ball.velocity = [r.choice([-5,-4,-3,3,4,5]),r.randint(-4,4)]
 
 def draw_goal(screen:pygame.Surface,player:Player,x,y):
-    font = pygame.font.Font("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/pong-score/pong-score.ttf",40)
+    font = pygame.font.Font("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/pong-score/pong-score.ttf",40)
     text = font.render(f"""{player.goal}""",1,"white")
     screen.blit(text,(x,y))
 
@@ -134,11 +134,11 @@ def main():
                 player2.set_direction("")
         if ball.position.y >= HEIGHT or ball.position.y <= 0:
             ball.bounce_walls()
-            wall_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/sounds/wall.mp3")
+            wall_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/sounds/wall.mp3")
             wall_sound.play()
         if ball_rect.colliderect(player1_rect) or ball_rect.colliderect(player2_rect):
             ball.bounce_player()
-            player_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame/pong/sounds/player.mp3")
+            player_sound = pygame.mixer.Sound("/Users/yatagaclapotk/Desktop/Genel Çalişmalar/pygame_projects/pong/sounds/player.mp3")
             player_sound.play()
         if ball.position.x >= WIDTH:
             player1.goal_conceded()
