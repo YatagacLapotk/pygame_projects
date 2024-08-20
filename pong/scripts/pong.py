@@ -1,4 +1,4 @@
-import pygame
+import pygame,sys
 import random as r
 
 WIDTH = 700
@@ -79,12 +79,16 @@ def draw_ball(screen,ball:Ball):
     screen.blit(ballimg,ball_rect)
     return ball_rect
 
-def draw_winner(screen:pygame.Surface,player:Player,ball:Ball):
-    screen.fill("black")
+def play_again(screen:pygame.Surface):
+    button_rect = pygame.Rect(WIDTH//2-50,300-50,100,40)
+    pygame.draw.rect(screen,"black",button_rect)
     font = pygame.font.SysFont("comicsans",36)
-    text = font.render(f""" {player.name} wins! Game over!!!""",1,"white")
-    screen.blit(text,(WIDTH//2-text.get_width()/2,HEIGHT//2-text.get_height()/2))
-    ball.velocity = [0,0]
+    text = font.render("Play Again",1,"white")
+    text_rect = text.get_rect(center=(button_rect.center))
+    screen.blit(text,text_rect)
+    return button_rect
+
+        
 
 def draw_begin(player1:Player,player2:Player,ball:Ball,screen:pygame.Surface):
     player1.set_position(WIDTH-30,HEIGHT//2-30)
@@ -97,19 +101,76 @@ def draw_goal(screen:pygame.Surface,player:Player,x,y):
     text = font.render(f"""{player.goal}""",1,"white")
     screen.blit(text,(x,y))
 
+def draw_exit(screen:pygame.Surface,posx:int=300):
+    button_rect = pygame.Rect(WIDTH//2-50,posx-50,100,40)
+    pygame.draw.rect(screen,"black",button_rect)
+    font = pygame.font.SysFont("comicsans",36)
+    text = font.render("Exit",1,"white")
+    text_rect = text.get_rect(center=(button_rect.center))
+    screen.blit(text,text_rect)
+    return button_rect
 
-
+def draw_start(screen:pygame.Surface):
+    button_rect = pygame.Rect(WIDTH//2-50,200-50,100,40)
+    pygame.draw.rect(screen,"black",button_rect)
+    font = pygame.font.SysFont("comicsans",36)
+    text = font.render("Start",1,"white")
+    text_rect = text.get_rect(center=(button_rect.center))
+    screen.blit(text,text_rect)
+    return button_rect
+    
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH,HEIGHT))
     pygame.display.set_caption("PONG")
-    clock = pygame.time.Clock()
-    run = True 
+    screen.fill("Black")
+    start_but = draw_start(screen)
+    exit_but = draw_exit(screen)
+    while True:
+        mos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type==pygame.MOUSEBUTTONDOWN:    
+                if start_but.collidepoint(mos):
+                    game(screen)
+                elif exit_but.collidepoint(mos):
+                    pygame.quit()
+                    sys.exit()
+                
+        pygame.display.flip()        
+
+def draw_winner(screen:pygame.Surface,player:Player,ball:Ball):
+    screen.fill("black")
+    font = pygame.font.SysFont("comicsans",36)
+    text = font.render(f""" {player.name} wins! Game over!!!""",1,"white")
+    screen.blit(text,(WIDTH//2-text.get_width()/2,200-text.get_height()/2))
+    ball.velocity = [0,0]
+    play_again_but = play_again(screen)
+    exit_but = draw_exit(screen,350)
+    pygame.display.flip()
+    while True:  
+        mos = pygame.mouse.get_pos()  
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()  
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if play_again_but.collidepoint(mos):
+                    game(screen)
+                if exit_but.collidepoint(mos):
+                    pygame.quit()
+                    sys.exit()
+    
+def game(screen:pygame.Surface):
     player1 = Player("Player1")
     player2 = Player("Player2")
+    player1.goal=9
     ball = Ball()   
+    clock = pygame.time.Clock()
     draw_begin(player1,player2,ball,screen)
-    while run:
+    while True:
         screen.fill("black")
         screen.blit(halfsidimg,(WIDTH//2-halfsidimg.get_width(),0))
         player1_rect = draw_player(screen,player1)
@@ -119,7 +180,8 @@ def main():
         draw_goal(screen,player2,WIDTH//2+10,30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run=False
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     player1.set_direction("UP")
@@ -153,8 +215,8 @@ def main():
 
         player1.move()
         player2.move()
-        ball.move()
         clock.tick(60)
+        ball.move()
         pygame.display.flip()
 if __name__== "__main__":
     main()
